@@ -1,10 +1,11 @@
 name: Retry workflow
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       run_id:
         required: true
+        type: string
 jobs:
   rerun:
     runs-on: ubuntu-24.04

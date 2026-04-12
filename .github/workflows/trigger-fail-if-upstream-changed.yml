@@ -1,9 +1,7 @@
 name: Fail on upstream packages changes
 
 on:
-  pull_request:
-    paths:
-      - 'packages/**'
+  workflow_call:
 
 jobs:
   check-upstream-packages:

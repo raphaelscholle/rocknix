@@ -1,73 +1,7 @@
 name: Build
 
 on:
-  schedule:
-    - cron: "0 3 * * *"
-  workflow_dispatch:
-    inputs:
-      release:
-        description: 'Official release'
-        required: false
-        default: false
-        type: boolean
-      RK3326:
-        description: 'RK3326'
-        required: false
-        default: false
-        type: boolean
-      RK3399:
-        description: 'RK3399'
-        required: false
-        default: false
-        type: boolean
-      RK3566:
-        description: 'RK3566'
-        required: false
-        default: false
-        type: boolean
-      RK3588:
-        description: 'RK3588'
-        required: false
-        default: false
-        type: boolean
-      S922X:
-        description: 'S922X'
-        required: false
-        default: false
-        type: boolean
-      H700:
-        description: 'H700'
-        required: false
-        default: false
-        type: boolean
-      SDM845:
-        description: 'SDM845'
-        required: false
-        default: false
-        type: boolean
-      SM8250:
-        description: 'SM8250'
-        required: false
-        default: false
-        type: boolean
-      SM8550:
-        description: 'SM8550'
-        required: false
-        default: false
-        type: boolean
-      SM8650:
-        description: 'SM8650'
-        required: false
-        default: false
-        type: boolean
-      SM6115:
-        description: 'SM6115'
-        required: false
-        default: false
-        type: boolean
   workflow_call:
-  pull_request:
-    types: [ assigned ]
 
 jobs:
   set-envs:

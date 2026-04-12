@@ -40,6 +40,27 @@
 # build and install pipewire support (yes / no)
   PIPEWIRE_SUPPORT="yes"
 
+### KODI SETTINGS ###
+# Mediacenter to use (kodi / no)
+  MEDIACENTER="kodi"
+
+# Skins to install (Estuary)
+# Space separated list is supported,
+# e.g. SKINS="Estuary"
+  SKINS="Estuary"
+
+# Default Skin (Estuary)
+  SKIN_DEFAULT="Estuary"
+
+# build kodi with alsa support (yes/no)
+  KODI_ALSA_SUPPORT="yes"
+
+# build kodi with pulseaudio support (yes/no)
+  KODI_PULSEAUDIO_SUPPORT="yes"
+
+# build kodi with pipewire support (yes/no)
+  KODI_PIPEWIRE_SUPPORT="no"
+
 # Define package sets to clean based on the type of build being executed.
 # This should be updated to be more dynamic in the future.
   CLEAN_OS_BASE="emulators system-utils modules quirks autostart rocknix kernel-firmware"

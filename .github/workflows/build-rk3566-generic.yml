@@ -1,0 +1,50 @@
+name: Build RK3566 Generic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - next
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: rk3566-generic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  set-envs:
+    runs-on: ubuntu-24.04
+    outputs:
+      OWNER_LC: ${{ steps.set-envs.outputs.OWNER_OUTPUT }}
+    steps:
+      - name: Set lowercase owner name
+        id: set-envs
+        run: |
+          OWNER_LC="${OWNER,,}"
+          echo "OWNER_OUTPUT=${OWNER_LC}" >> "$GITHUB_OUTPUT"
+        env:
+          OWNER: ${{ github.repository_owner }}
+
+  build-docker:
+    name: Docker
+    needs: set-envs
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      OWNER_LC: ${{ needs.set-envs.outputs.OWNER_LC }}
+
+  build-rk3566:
+    name: Build RK3566
+    needs:
+      - set-envs
+      - build-docker
+    uses: ./.github/workflows/build-device.yml
+    secrets: inherit
+    with:
+      PROJECT: ROCKNIX
+      DEVICE: RK3566
+      OWNER_LC: ${{ needs.set-envs.outputs.OWNER_LC }}
+      NIGHTLY: "yes"
+      OFFICIAL: "no"

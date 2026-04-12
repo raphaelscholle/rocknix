@@ -25,7 +25,7 @@ if [ ! "${OPENGLES_SUPPORT}" = no ]; then
 fi
 
 PKG_CMAKE_OPTS_TARGET+=" -DROCKNIX=1 \
-                         -DDISABLE_KODI=1 \
+                         -DDISABLE_KODI=0 \
                          -DENABLE_FILEMANAGER=0 \
                          -DCEC=0 \
                          -DENABLE_PULSE=1 \
