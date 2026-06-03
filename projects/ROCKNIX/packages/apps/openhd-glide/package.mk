@@ -13,6 +13,7 @@ GET_HANDLER_SUPPORT="git"
 
 PKG_CMAKE_OPTS_TARGET="-DOPENHD_GLIDE_DEVICE_KMS=ON \
                        -DOPENHD_GLIDE_WARNINGS_AS_ERRORS=OFF \
+                       -DCMAKE_EXE_LINKER_FLAGS=-shared-libgcc \
                        -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
                        -DFETCHCONTENT_FULLY_DISCONNECTED=OFF"
 
