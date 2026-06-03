@@ -1,0 +1,8 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
+
+mkdir -p /storage/.config/profile.d
+
+cat <<EOF >/storage/.config/profile.d/090-ui_service
+UI_SERVICE="openhd-glide.service"
+EOF

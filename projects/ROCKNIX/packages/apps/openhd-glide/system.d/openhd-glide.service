@@ -1,0 +1,16 @@
+[Unit]
+Description=OpenHD Glide DRM/KMS rendering stack
+After=rocknix-automount.service
+
+[Service]
+Type=simple
+Environment=HOME=/storage
+Environment=XDG_RUNTIME_DIR=/var/run/0-runtime-dir
+EnvironmentFile=/etc/profile
+WorkingDirectory=/storage
+ExecStart=/usr/bin/start_openhd_glide.sh
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=rocknix.target
