@@ -1,14 +1,23 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3d0c0f1..9b74a85 100644
+index 40fac92..014e11c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -107,6 +107,9 @@ find_library(CEDAR_MEMADAPTER_LIBRARY NAMES MemAdapter)
+@@ -108,6 +108,10 @@ find_library(CEDAR_MEMADAPTER_LIBRARY NAMES MemAdapter)
  find_library(CEDAR_VE_LIBRARY NAMES VE)
  find_library(CEDAR_VIDEOENGINE_LIBRARY NAMES videoengine)
  find_library(ROCKCHIP_MPP_LIBRARY NAMES rockchip_mpp)
-+if(NOT ROCKCHIP_MPP_LIBRARY)
++find_path(ROCKCHIP_MPP_INCLUDE_DIR NAMES rockchip/rk_mpi.h)
++if(NOT ROCKCHIP_MPP_LIBRARY OR NOT ROCKCHIP_MPP_INCLUDE_DIR)
 +    message(FATAL_ERROR "ROCKNIX openhd-glide requires Rockchip MPP")
 +endif()
  
  set(LV_CONF_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/glide_ui/lv_conf.h CACHE STRING "" FORCE)
  set(LV_CONF_BUILD_DISABLE_EXAMPLES ON CACHE BOOL "" FORCE)
+@@ -284,6 +288,7 @@ else()
+ endif()
+ if(ROCKCHIP_MPP_LIBRARY AND GSTREAMER_FOUND)
+     target_compile_definitions(openhd-glide PRIVATE OPENHD_GLIDE_HAS_RKMPP=1)
++    target_include_directories(openhd-glide PRIVATE ${ROCKCHIP_MPP_INCLUDE_DIR})
+     target_link_libraries(openhd-glide PRIVATE ${ROCKCHIP_MPP_LIBRARY})
+ else()
+     target_compile_definitions(openhd-glide PRIVATE OPENHD_GLIDE_HAS_RKMPP=0)

@@ -13,7 +13,15 @@ GET_HANDLER_SUPPORT="git"
 
 PKG_CMAKE_OPTS_TARGET="-DOPENHD_GLIDE_DEVICE_KMS=ON \
                        -DOPENHD_GLIDE_WARNINGS_AS_ERRORS=OFF \
+                       -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
                        -DFETCHCONTENT_FULLY_DISCONNECTED=OFF"
+
+PKG_MAKE_OPTS_TARGET="-v"
+
+pre_make_target() {
+  echo "openhd-glide CMake feature detection:"
+  grep -E "^(ROCKCHIP_MPP|GSTREAMER|LIBDRM|GBM|EGL|GLESV2|FREETYPE)_" CMakeCache.txt || true
+}
 
 post_makeinstall_target() {
   mkdir -p ${INSTALL}/usr/lib/systemd/system
