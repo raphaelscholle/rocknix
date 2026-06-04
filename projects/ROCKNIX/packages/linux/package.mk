@@ -18,32 +18,47 @@ PKG_PATCH_DIRS="${LINUX} mainline ${DEVICE} default"
 [[ "${DEVICE}" == RK* ]] && PKG_PATCH_DIRS+=" mainline-rockchip"
 [[ "${DEVICE}" == SM* ]] && PKG_DEPENDS_TARGET+=" mkbootimg:host"
 
-case ${DEVICE} in
-  RK3588)
-    PKG_VERSION="b8e62bed74766b6c8c423a767b35495e78b64caf"
-    PKG_URL="https://github.com/armbian/linux-rockchip/archive/${PKG_VERSION}.tar.gz"
-    PKG_GIT_CLONE_BRANCH="rk-6.1-rkr3"
-    PKG_PATCH_DIRS="${LINUX} ${DEVICE} default"
-    ;;
-  SDM845)
-    PKG_VERSION="5.18"
-    PKG_URL="https://gitlab.com/tjstyle/linux/-/archive/sdm845/${PKG_VERSION}-release/linux-sdm845-${PKG_VERSION}-release.tar.gz"
-    PKG_PATCH_DIRS="${LINUX} ${DEVICE} default"
+case ${LINUX} in
+  openhd-rk2410-nocsf)
+    PKG_VERSION="d868b61f3f66ff2152534f70c77aa273e111c7f1"
+    PKG_URL="https://github.com/OpenHD/linux-rk2410-nocsf.git"
+    PKG_GIT_CLONE_BRANCH="openhd-hdmi-120hz"
+    PKG_GIT_CLONE_SINGLE="yes"
+    PKG_GIT_CLONE_DEPTH="1"
+    PKG_GIT_SUBMODULE_DEPTH="1"
+    PKG_SOURCE_DIR="${PKG_NAME}-${PKG_VERSION}/src"
+    GET_HANDLER_SUPPORT="git"
+    PKG_PATCH_DIRS="${LINUX}"
     ;;
   *)
     case ${DEVICE} in
-      SM8250|SM8550|SM8650|H700)
-        PKG_VERSION="6.19.5"
-        PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+      RK3588)
+        PKG_VERSION="b8e62bed74766b6c8c423a767b35495e78b64caf"
+        PKG_URL="https://github.com/armbian/linux-rockchip/archive/${PKG_VERSION}.tar.gz"
+        PKG_GIT_CLONE_BRANCH="rk-6.1-rkr3"
+        PKG_PATCH_DIRS="${LINUX} ${DEVICE} default"
         ;;
-      S922X|RK3399|RK3566|SM6115)
-        PKG_VERSION="6.18.21"
-        PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+      SDM845)
+        PKG_VERSION="5.18"
+        PKG_URL="https://gitlab.com/tjstyle/linux/-/archive/sdm845/${PKG_VERSION}-release/linux-sdm845-${PKG_VERSION}-release.tar.gz"
+        PKG_PATCH_DIRS="${LINUX} ${DEVICE} default"
         ;;
       *)
-        PKG_VERSION="6.12.79"
-        PKG_PATCH_DIRS+=" 6.12-LTS"
-        PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+        case ${DEVICE} in
+          SM8250|SM8550|SM8650|H700)
+            PKG_VERSION="6.19.5"
+            PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+            ;;
+          S922X|RK3399|RK3566|SM6115)
+            PKG_VERSION="6.18.21"
+            PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+            ;;
+          *)
+            PKG_VERSION="6.12.79"
+            PKG_PATCH_DIRS+=" 6.12-LTS"
+            PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+            ;;
+        esac
         ;;
     esac
     ;;

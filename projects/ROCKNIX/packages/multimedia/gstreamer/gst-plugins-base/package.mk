@@ -6,7 +6,7 @@
 pre_configure_target() {
   PKG_MESON_OPTS_TARGET="-Dgl=enabled \
                          -Dadder=disabled \
-                         -Dapp=disabled \
+                         -Dapp=enabled \
                          -Daudioconvert=disabled \
                          -Daudiomixer=disabled \
                          -Daudiorate=disabled \
@@ -42,7 +42,7 @@ pre_configure_target() {
                          -Dxvideo=disabled \
                          -Dexamples=disabled \
                          -Dtests=disabled \
-                         -Dtools=disabled \
+                         -Dtools=enabled \
                          -Dintrospection=disabled \
                          -Dnls=disabled \
                          -Dorc=disabled \

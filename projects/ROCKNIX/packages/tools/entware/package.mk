@@ -13,6 +13,11 @@ PKG_TOOLCHAIN="manual"
 post_install() {
   mkdir -p ${INSTALL}/usr/sbin
     cp -P ${PKG_DIR}/scripts/installentware ${INSTALL}/usr/sbin
+    chmod 0755 ${INSTALL}/usr/sbin/installentware
+
+  mkdir -p ${INSTALL}/usr/bin
+    cp -P ${PKG_DIR}/scripts/opkg ${INSTALL}/usr/bin
+    chmod 0755 ${INSTALL}/usr/bin/opkg
 
   enable_service entware.service
 }

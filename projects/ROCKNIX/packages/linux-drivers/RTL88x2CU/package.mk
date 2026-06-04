@@ -1,18 +1,16 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
-# Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
-# Copyright (C) 2023 JELOS (https://github.com/JustEnoughLinuxOS)
+# Copyright (C) 2026 ROCKNIX
 
-PKG_NAME="RTL8812AU"
-PKG_VERSION="b663449b8099df59a2b35f316f4c15a543b5a57e"
+PKG_NAME="RTL88x2CU"
+PKG_VERSION="85dbdb27e3e32ac8f9c820bc318db094f3f81224"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/OpenHD/rtl8812au"
+PKG_SITE="https://github.com/OpenHD/rtl88x2cu"
 PKG_URL="${PKG_SITE}.git"
-PKG_LONGDESC="Realtek 8812AU driver for 4.4-5.x"
+PKG_LONGDESC="Realtek 88x2CU driver"
 PKG_TOOLCHAIN="make"
 PKG_IS_KERNEL_PKG="yes"
 GET_HANDLER_SUPPORT="git"
-PKG_GIT_CLONE_BRANCH="v5.6.4.2"
+PKG_GIT_CLONE_BRANCH="master"
 PKG_GIT_CLONE_SINGLE="yes"
 PKG_GIT_CLONE_DEPTH="1"
 

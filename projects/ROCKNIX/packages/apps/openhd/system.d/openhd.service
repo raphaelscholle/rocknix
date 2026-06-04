@@ -1,0 +1,18 @@
+[Unit]
+Description=OpenHD core
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=root
+Environment=LIBCAMERA_LOG_LEVELS=*:ERROR
+ExecStart=/usr/bin/openhd
+Restart=on-failure
+RestartSec=5
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target

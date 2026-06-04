@@ -1,0 +1,12 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+
+export PATH=/opt/bin:/opt/sbin:$PATH
+
+if [ -x /opt/bin/opkg ]; then
+  exec /opt/bin/opkg "$@"
+fi
+
+echo "opkg is provided by Entware and is not installed yet." >&2
+echo "Run: installentware" >&2
+exit 127

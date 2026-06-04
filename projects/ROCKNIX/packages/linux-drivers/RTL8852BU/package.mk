@@ -1,18 +1,16 @@
-# SPDX-License-Identifier: GPL-2.0-or-later
-# Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
-# Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
-# Copyright (C) 2023 JELOS (https://github.com/JustEnoughLinuxOS)
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2026 ROCKNIX
 
-PKG_NAME="RTL8812AU"
-PKG_VERSION="b663449b8099df59a2b35f316f4c15a543b5a57e"
+PKG_NAME="RTL8852BU"
+PKG_VERSION="e30b1c206b6175370863172c246626a551b0778a"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/OpenHD/rtl8812au"
+PKG_SITE="https://github.com/raphaelscholle/rtl8852bu"
 PKG_URL="${PKG_SITE}.git"
-PKG_LONGDESC="Realtek 8812AU driver for 4.4-5.x"
+PKG_LONGDESC="Realtek 8852BU Linux driver"
 PKG_TOOLCHAIN="make"
 PKG_IS_KERNEL_PKG="yes"
 GET_HANDLER_SUPPORT="git"
-PKG_GIT_CLONE_BRANCH="v5.6.4.2"
+PKG_GIT_CLONE_BRANCH="main"
 PKG_GIT_CLONE_SINGLE="yes"
 PKG_GIT_CLONE_DEPTH="1"
 
@@ -25,6 +23,7 @@ make_target() {
        ARCH=${TARGET_KERNEL_ARCH} \
        KSRC=$(kernel_path) \
        CROSS_COMPILE=${TARGET_KERNEL_PREFIX} \
+       CONFIG_RTW_DEBUG=n \
        CONFIG_POWER_SAVING=y
 }
 

@@ -4,13 +4,17 @@
 # Copyright (C) 2023 JELOS (https://github.com/JustEnoughLinuxOS)
 
 PKG_NAME="RTL8821CU"
-PKG_VERSION="3d1fcf4bc838542ceb03b0b4e9e40600720cf6ae"
+PKG_VERSION="8c2226a74ae718439d56248bd2e44ccf717086d5"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/morrownr/8821cu-20210916"
+PKG_SITE="https://github.com/raphaelscholle/rtl8821CU"
 PKG_URL="${PKG_SITE}.git"
 PKG_LONGDESC="Realtek 8821CU driver for 4.4-5.x"
 PKG_TOOLCHAIN="make"
 PKG_IS_KERNEL_PKG="yes"
+GET_HANDLER_SUPPORT="git"
+PKG_GIT_CLONE_BRANCH="master"
+PKG_GIT_CLONE_SINGLE="yes"
+PKG_GIT_CLONE_DEPTH="1"
 
 pre_make_target() {
   unset LDFLAGS

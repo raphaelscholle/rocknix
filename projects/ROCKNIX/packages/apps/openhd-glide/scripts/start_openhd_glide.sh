@@ -11,6 +11,7 @@ UI_WIDTH="${GLIDE_UI_WIDTH:-760}"
 UI_HEIGHT="${GLIDE_UI_HEIGHT:-${HEIGHT}}"
 UI_COLOR="${GLIDE_UI_COLOR:-0xCC0B1722}"
 UI_BUFFER="${GLIDE_UI_BUFFER:-/tmp/openhd-glide-ui.argb}"
+VIDEO_BACKEND=$(printf "%s" "${GLIDE_VIDEO_BACKEND:-rkmpp}" | tr '[:upper:]' '[:lower:]')
 
 case "${CODEC}" in
   h264|avc)
@@ -21,6 +22,19 @@ case "${CODEC}" in
     ;;
   *)
     echo "unsupported codec '${CODEC}'; use h264 or h265" >&2
+    exit 2
+    ;;
+esac
+
+case "${VIDEO_BACKEND}" in
+  gstreamer|gst)
+    VIDEO_BACKEND_ARG="--gstreamer-video"
+    ;;
+  rkmpp|mpp|native-rkmpp)
+    VIDEO_BACKEND_ARG="--native-rkmpp-video"
+    ;;
+  *)
+    echo "unsupported video backend '${VIDEO_BACKEND}'; use gstreamer or rkmpp" >&2
     exit 2
     ;;
 esac
@@ -42,7 +56,7 @@ trap cleanup EXIT INT TERM
 
 /usr/bin/openhd-glide \
   --kms-video-preview \
-  --native-rkmpp-video \
+  "${VIDEO_BACKEND_ARG}" \
   --view-udp-port "${PORT}" \
   --view-udp-codec "${CODEC}" \
   --preview-width "${WIDTH}" \

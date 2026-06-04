@@ -1,0 +1,26 @@
+diff --git a/src/openhd_glide/main.cpp b/src/openhd_glide/main.cpp
+index 0f3c9e7..3a71361 100644
+--- a/src/openhd_glide/main.cpp
++++ b/src/openhd_glide/main.cpp
+@@ -1248,17 +1248,19 @@ int run_kms_video_preview(const Options& options)
+         return text.str();
+     };
+ 
+-    const std::array<DecoderPipelineCandidate, 3> candidates = use_h265
+-        ? std::array<DecoderPipelineCandidate, 3> { {
++    const std::array<DecoderPipelineCandidate, 4> candidates = use_h265
++        ? std::array<DecoderPipelineCandidate, 4> { {
+             { "mppvideodec", "mppvideodec", "mppvideodec dma-feature=true arm-afbc=false fast-mode=true qos=false format=NV12", "video/x-raw(memory:DMABuf),format=NV12" },
++            { "v4l2slh265dec", "v4l2slh265dec", "v4l2slh265dec", "video/x-raw(memory:DMABuf),format=DMA_DRM" },
+             { "v4l2h265dec", "v4l2h265dec", "v4l2h265dec capture-io-mode=dmabuf", "video/x-raw(memory:DMABuf),format=DMA_DRM" },
+             { "omxhevcvideodec", "omxhevcvideodec", "omxhevcvideodec disable-dma-feature=false", "" },
+         } }
+-        : std::array<DecoderPipelineCandidate, 3> { {
++        : std::array<DecoderPipelineCandidate, 4> { {
+             { "mppvideodec", "mppvideodec", "mppvideodec dma-feature=true arm-afbc=false fast-mode=true qos=false format=NV12", "video/x-raw(memory:DMABuf),format=NV12" },
++            { "v4l2slh264dec", "v4l2slh264dec", "v4l2slh264dec", "video/x-raw(memory:DMABuf),format=DMA_DRM" },
+             { "v4l2h264dec", "v4l2h264dec", "v4l2h264dec capture-io-mode=dmabuf", "video/x-raw(memory:DMABuf),format=DMA_DRM" },
+             { "omxh264dec", "omxh264dec", "omxh264dec disable-dma-feature=false", "" },
+         } };
+ 
+     GError* error {};

@@ -26,7 +26,7 @@ pre_configure_target() {
                          -Dexamples=disabled \
                          -Dtests=disabled \
                          -Dbenchmarks=disabled \
-                         -Dtools=disabled \
+                         -Dtools=enabled \
                          -Ddoc=disabled \
                          -Dintrospection=disabled \
                          -Dnls=disabled \

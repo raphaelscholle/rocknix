@@ -168,7 +168,7 @@ pre_configure_target() {
                          -Dzxing=disabled \
                          -Dwpe=disabled \
                          -Dmagicleap=disabled \
-                         -Dv4l2codecs=disabled \
+                         -Dv4l2codecs=enabled \
                          -Dhls=disabled \
                          -Dsctp-internal-usrsctp=disabled \
                          -Dexamples=disabled \
