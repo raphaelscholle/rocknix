@@ -66,6 +66,12 @@
   # Pipewire audio support (yes / no)
     PIPEWIRE_SUPPORT="yes"
 
+  # OpenHD image profile
+    OPENHD_MINIMAL_IMAGE="yes"
+    EMULATION_DEVICE="no"
+    ENABLE_32BIT="no"
+    MODULES_PKG="no"
+
   # Additional drivers to install:
   # for a list of additional drivers see packages/linux-drivers
   # Space separated list is supported,

@@ -33,6 +33,18 @@ PKG_TOOLS="patchelf i2c-tools evtest"
 
 PKG_DEBUG="debug"
 
+if [ "${OPENHD_MINIMAL_IMAGE}" = "yes" ]
+then
+  EMULATION_DEVICE=no
+  ENABLE_32BIT=no
+  MODULES_PKG=no
+  PKG_UI_TOOLS=""
+  PKG_GRAPHICS=""
+  PKG_MULTIMEDIA="ffmpeg"
+  PKG_SOUND=""
+  PKG_SYNC=""
+fi
+
 if [ "${BASE_ONLY}" = "true" ]
 then
   EMULATION_DEVICE=no
@@ -41,14 +53,17 @@ then
 else
   PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS} ${PKG_SOUND} ${PKG_SYNC} ${PKG_GRAPHICS} ${PKG_UI} ${PKG_UI_TOOLS} ${PKG_MULTIMEDIA} misc-packages"
 
-  # GL demos and tools
-  [[ ! -z "${OPENGL_SUPPORT}" ]] && PKG_DEPENDS_TARGET+=" mesa-demos"
+  if [ "${OPENHD_MINIMAL_IMAGE}" != "yes" ]
+  then
+    # GL demos and tools
+    [[ ! -z "${OPENGL_SUPPORT}" ]] && PKG_DEPENDS_TARGET+=" mesa-demos"
 
-  # GLmark2
-  [[ ! -z "${OPENGLES_SUPPORT}" ]] && PKG_DEPENDS_TARGET+=" glmark2"
+    # GLmark2
+    [[ ! -z "${OPENGLES_SUPPORT}" ]] && PKG_DEPENDS_TARGET+=" glmark2"
 
-  # Vulkan demos and tools
-  [ "${VULKAN_SUPPORT}" = "yes" ] && PKG_DEPENDS_TARGET+=" vkmark"
+    # Vulkan demos and tools
+    [ "${VULKAN_SUPPORT}" = "yes" ] && PKG_DEPENDS_TARGET+=" vkmark"
+  fi
 
   # Weston kiosk shell dpms support.
   [ "${WINDOWMANAGER}" = "weston" ] && PKG_DEPENDS_TARGET+=" weston-kiosk-shell-dpms"
