@@ -18,3 +18,10 @@ esac
 
 PKG_CMAKE_OPTS_TARGET="-DENABLE_VP9D=${PKG_ENABLE_VP9D} \
                        -DHAVE_DRM=ON"
+
+pre_configure_target() {
+  if [ "${ARCH}" = "aarch64" ]; then
+    export CFLAGS="${CFLAGS} -mno-outline-atomics"
+    export CXXFLAGS="${CXXFLAGS} -mno-outline-atomics"
+  fi
+}
