@@ -1256,12 +1256,12 @@
 	status = "okay";
 };
 
-&usb2phy1_host {
+&u2phy1_host {
 	vbus-supply = <&vcc5v0_usb>;
 	status = "okay";
 };
 
-&usb2phy1_otg {
+&u2phy1_otg {
 	status = "okay";
 };
 
@@ -1269,7 +1269,11 @@
 	status = "okay";
 };
 
-&usb_host0_xhci {
+&usbdrd30 {
+	status = "okay";
+};
+
+&usbdrd_dwc3 {
 	dr_mode = "otg";
 	phys = <&usb2phy0_otg>;
 	phy-names = "usb2-phy";
@@ -1282,9 +1286,13 @@
 	status = "okay";
 };
 
-&usb_host1_xhci {
+&usbhost30 {
+	status = "okay";
+};
+
+&usbhost_dwc3 {
 	phy-names = "usb2-phy";
-	phys = <&usb2phy1_host>;
+	phys = <&u2phy1_host>;
 	maximum-speed = "high-speed";
 	status = "okay";
 };
@@ -1314,7 +1322,7 @@
 };
 
 /* The following nodes break PM unless disabled */
-&combphy1 {
+&combphy1_usq {
 	status = "disabled";
 };
 

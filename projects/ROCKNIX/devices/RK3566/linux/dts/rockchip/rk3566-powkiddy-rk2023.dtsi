@@ -334,7 +334,7 @@
 	};
 };
 
-&combphy1 {
+&combphy1_usq {
 	status = "okay";
 };
 
@@ -392,15 +392,20 @@
 	status = "okay";
 };
 
-&hdmi_in {
-	hdmi_in_vp0: endpoint {
-		remote-endpoint = <&vp0_out_hdmi>;
-	};
+&hdmi_in_vp0 {
+	remote-endpoint = <&vp0_out_hdmi>;
+	status = "okay";
 };
 
-&hdmi_out {
-	hdmi_out_con: endpoint {
-		remote-endpoint = <&hdmi_con_in>;
+&hdmi {
+	ports {
+		port@1 {
+			reg = <1>;
+
+			hdmi_out_con: endpoint {
+				remote-endpoint = <&hdmi_con_in>;
+			};
+		};
 	};
 };
 
@@ -799,7 +804,11 @@
 	};
 };
 
-&usb_host0_xhci {
+&usbdrd30 {
+	status = "okay";
+};
+
+&usbdrd_dwc3 {
 	dr_mode = "peripheral";
 	phys = <&usb2phy0_otg>;
 	phy-names = "usb2-phy";
@@ -814,9 +823,13 @@
 	status = "okay";
 };
 
-&usb_host1_xhci {
+&usbhost30 {
+	status = "okay";
+};
+
+&usbhost_dwc3 {
 	phy-names = "usb2-phy", "usb3-phy";
-	phys = <&usb2phy1_host>, <&combphy1 PHY_TYPE_USB3>;
+	phys = <&u2phy1_host>, <&combphy1_usq PHY_TYPE_USB3>;
 	status = "okay";
 };
 
@@ -832,7 +845,7 @@
 	status = "okay";
 };
 
-&usb2phy1_host {
+&u2phy1_host {
 	status = "okay";
 };
 
