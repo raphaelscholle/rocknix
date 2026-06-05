@@ -75,17 +75,27 @@ jobs:
       - name: Clean ccache
         run: |
           export CCACHE_DIR=./build.ROCKNIX-${{ inputs.DEVICE }}.arm/.ccache
-          ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/toolchain/bin/ccache -s -v
-          ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/toolchain/bin/ccache -M 1.5G
-          ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/toolchain/bin/ccache -c
-          ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/toolchain/bin/ccache -s -v
-          ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/toolchain/bin/ccache -z
+          CCACHE_BIN=./build.ROCKNIX-${{ inputs.DEVICE }}.arm/toolchain/bin/ccache
+          if [ ! -x "${CCACHE_BIN}" ]; then
+            echo "ccache binary not found at ${CCACHE_BIN}; skipping cleanup."
+            exit 0
+          fi
+          "${CCACHE_BIN}" -s -v
+          "${CCACHE_BIN}" -M 1.5G
+          "${CCACHE_BIN}" -c
+          "${CCACHE_BIN}" -s -v
+          "${CCACHE_BIN}" -z
 
       - name: Tar ccache
         run: |
+          if [ ! -d ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/.ccache ]; then
+            echo "ccache directory not found; skipping archive."
+            exit 0
+          fi
           tar -cf ccache-arm-${{ inputs.DEVICE }}.tar ./build.ROCKNIX-${{ inputs.DEVICE }}.arm/.ccache  
 
       - name: save ccache
+        if: ${{ hashFiles(format('ccache-arm-{0}.tar', inputs.DEVICE)) != '' }}
         uses: ncipollo/release-action@v1
         with:
           tag: ccache
