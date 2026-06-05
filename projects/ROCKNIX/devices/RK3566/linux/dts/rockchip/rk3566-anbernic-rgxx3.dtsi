@@ -12,102 +12,32 @@
 / {
 	chassis-type = "handset";
 
-	aliases {
-		mmc1 = &sdmmc0;
-		mmc2 = &sdmmc1;
-		mmc3 = &sdmmc2;
+	chosen: chosen {
+		stdout-path = "serial2:1500000n8";
 	};
 
-	adc-joystick {
-		compatible = "adc-joystick";
-		io-channels = <&adc_mux 0>,
-			      <&adc_mux 1>,
-			      <&adc_mux 2>,
-			      <&adc_mux 3>;
-		pinctrl-0 = <&joy_mux_en>;
-		pinctrl-names = "default";
+	adc_keys: adc-keys {
+		compatible = "adc-keys";
+		io-channels = <&saradc 0>;
+		io-channel-names = "buttons";
+		keyup-threshold-microvolt = <1800000>;
 		poll-interval = <60>;
-		#address-cells = <1>;
-		#size-cells = <0>;
 
-		axis@0 {
-			reg = <0>;
-			abs-flat = <32>;
-			abs-fuzz = <32>;
-			abs-range = <1023 15>;
-			linux,code = <ABS_X>;
+		/*
+		 * Button is mapped to F key in BSP kernel, but
+		 * according to input guidelines it should be mode.
+		 */
+		button-mode {
+			label = "MODE";
+			linux,code = <BTN_MODE>;
+			press-threshold-microvolt = <1750>;
 		};
-
-		axis@1 {
-			reg = <1>;
-			abs-flat = <32>;
-			abs-fuzz = <32>;
-			abs-range = <15 1023>;
-			linux,code = <ABS_RX>;
-		};
-
-		axis@2 {
-			reg = <2>;
-			abs-flat = <32>;
-			abs-fuzz = <32>;
-			abs-range = <15 1023>;
-			linux,code = <ABS_Y>;
-		};
-
-		axis@3 {
-			reg = <3>;
-			abs-flat = <32>;
-			abs-fuzz = <32>;
-			abs-range = <1023 15>;
-			linux,code = <ABS_RY>;
-		};
-	};
-
-	adc_mux: adc-mux {
-		compatible = "io-channel-mux";
-		channels = "left_x", "right_x", "left_y", "right_y";
-		#io-channel-cells = <1>;
-		io-channels = <&saradc 3>;
-		io-channel-names = "parent";
-		mux-controls = <&gpio_mux>;
-		settle-time-us = <100>;
-	};
-
-	backlight: backlight {
-		compatible = "pwm-backlight";
-		power-supply = <&vcc_sys>;
-		pwms = <&pwm4 0 25000 0>;
-	};
-
-	battery: battery {
-		compatible = "simple-battery";
-		charge-full-design-microamp-hours = <3151000>;
-		charge-term-current-microamp = <300000>;
-		constant-charge-current-max-microamp = <2000000>;
-		constant-charge-voltage-max-microvolt = <4250000>;
-		factory-internal-resistance-micro-ohms = <117000>;
-		voltage-max-design-microvolt = <4172000>;
-		voltage-min-design-microvolt = <3400000>;
-
-		ocv-capacity-celsius = <20>;
-		ocv-capacity-table-0 =  <4172000 100>, <4092000 95>, <4035000 90>, <3990000 85>,
-					<3939000 80>, <3895000 75>, <3852000 70>, <3807000 65>,
-					<3762000 60>, <3713000 55>, <3672000 50>, <3647000 45>,
-					<3629000 40>, <3613000 35>, <3598000 30>, <3578000 25>,
-					<3550000 20>, <3519000 15>, <3479000 10>, <3438000 5>,
-					<3400000 0>;
 	};
 
 	gpio_keys_control: gpio-keys-control {
 		compatible = "gpio-keys";
 		pinctrl-0 = <&btn_pins_ctrl>;
 		pinctrl-names = "default";
-
-		button-a {
-			gpios = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
-			label = "EAST";
-			linux,code = <BTN_EAST>;
-		};
 
 		button-b {
 			gpios = <&gpio3 RK_PC3 GPIO_ACTIVE_LOW>;
@@ -133,30 +63,6 @@
 			linux,code = <BTN_TL2>;
 		};
 
-		button-left {
-			gpios = <&gpio3 RK_PA6 GPIO_ACTIVE_LOW>;
-			label = "DPAD-LEFT";
-			linux,code = <BTN_DPAD_LEFT>;
-		};
-
-		button-r1 {
-			gpios = <&gpio3 RK_PB3 GPIO_ACTIVE_LOW>;
-			label = "TR";
-			linux,code = <BTN_TR>;
-		};
-
-		button-r2 {
-			gpios = <&gpio3 RK_PB4 GPIO_ACTIVE_LOW>;
-			label = "TR2";
-			linux,code = <BTN_TR2>;
-		};
-
-		button-right {
-			gpios = <&gpio3 RK_PA5 GPIO_ACTIVE_LOW>;
-			label = "DPAD-RIGHT";
-			linux,code = <BTN_DPAD_RIGHT>;
-		};
-
 		button-select {
 			gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_LOW>;
 			label = "SELECT";
@@ -169,18 +75,6 @@
 			linux,code = <BTN_START>;
 		};
 
-		button-thumbl {
-			gpios = <&gpio3 RK_PA1 GPIO_ACTIVE_LOW>;
-			label = "THUMBL";
-			linux,code = <BTN_THUMBL>;
-		};
-
-		button-thumbr {
-			gpios = <&gpio3 RK_PA2 GPIO_ACTIVE_LOW>;
-			label = "THUMBR";
-			linux,code = <BTN_THUMBR>;
-		};
-
 		button-up {
 			gpios = <&gpio3 RK_PA3 GPIO_ACTIVE_LOW>;
 			label = "DPAD-UP";
@@ -191,12 +85,6 @@
 			gpios = <&gpio3 RK_PC0 GPIO_ACTIVE_LOW>;
 			label = "NORTH";
 			linux,code = <BTN_NORTH>;
-		};
-
-		button-y {
-			gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_LOW>;
-			label = "WEST";
-			linux,code = <BTN_WEST>;
 		};
 	};
 
@@ -219,13 +107,6 @@
 		};
 	};
 
-	gpio_mux: mux-controller {
-		compatible = "gpio-mux";
-		mux-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>,
-			    <&gpio0 RK_PB7 GPIO_ACTIVE_LOW>;
-		#mux-control-cells = <0>;
-	};
-
 	hdmi-con {
 		compatible = "hdmi-connector";
 		ddc-i2c-bus = <&i2c5>;
@@ -238,25 +119,30 @@
 		};
 	};
 
-	/*
-	 * Device also includes an always on LED that is wired to the 5V input
-	 * voltage and is on when the device is plugged in.
-	 */
 	leds: pwm-leds {
 		compatible = "pwm-leds";
 
 		green_led: led-0 {
 			color = <LED_COLOR_ID_GREEN>;
-			function = LED_FUNCTION_STATUS;
+			default-state = "on";
+			function = LED_FUNCTION_POWER;
 			max-brightness = <255>;
 			pwms = <&pwm6 0 25000 0>;
 		};
 
-		red_led: led-1 {
-			color = <LED_COLOR_ID_RED>;
+		amber_led: led-1 {
+			color = <LED_COLOR_ID_AMBER>;
 			function = LED_FUNCTION_CHARGING;
 			max-brightness = <255>;
 			pwms = <&pwm7 0 25000 0>;
+		};
+
+		red_led: led-2 {
+			color = <LED_COLOR_ID_RED>;
+			default-state = "off";
+			function = LED_FUNCTION_STATUS;
+			max-brightness = <255>;
+			pwms = <&pwm0 0 25000 0>;
 		};
 	};
 
@@ -268,31 +154,6 @@
 		pinctrl-names = "default";
 		post-power-on-delay-ms = <200>;
 		reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_LOW>;
-	};
-
-	/*
-	 * Channels reversed for speakers. Headphones automatically switch via hardware when
-	 * detected with no ability to control output in software. Headphones appear to be mono
-	 * (each output channel receives all audio). No microphone support on 3.5mm jack.
-	 */
-	sound {
-		compatible = "simple-audio-card";
-		simple-audio-card,name = "rk817_ext";
-		simple-audio-card,format = "i2s";
-		simple-audio-card,mclk-fs = <256>;
-		simple-audio-card,widgets =
-			"Headphone", "Headphones";
-		simple-audio-card,routing =
-			"Headphones", "HPOL",
-			"Headphones", "HPOR";
-
-		simple-audio-card,codec {
-			sound-dai = <&rk817>;
-		};
-
-		simple-audio-card,cpu {
-			sound-dai = <&i2s1_8ch>;
-		};
 	};
 
 	vcc3v3_lcd0_n: regulator-vcc3v3-lcd0 {
@@ -332,6 +193,12 @@
 		regulator-max-microvolt = <3300000>;
 		regulator-name = "vcc_wifi";
 	};
+
+	vibrator: pwm-vibrator {
+		compatible = "pwm-vibrator";
+		pwm-names = "enable";
+		pwms = <&pwm5 0 1000000000 0>;
+	};
 };
 
 &combphy1 {
@@ -352,32 +219,6 @@
 
 &cpu3 {
 	cpu-supply = <&vdd_cpu>;
-};
-
-&dsi0 {
-	status = "okay";
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	ports {
-		dsi0_in: port@0 {
-			reg = <0>;
-			dsi0_in_vp1: endpoint {
-				remote-endpoint = <&vp1_out_dsi0>;
-			};
-		};
-
-		dsi0_out: port@1 {
-			reg = <1>;
-			mipi_out_panel: endpoint {
-				remote-endpoint = <&mipi_in_panel>;
-			};
-		};
-	};
-};
-
-&dsi_dphy0 {
-	status = "okay";
 };
 
 &gpu {
@@ -608,14 +449,28 @@
 				};
 			};
 		};
+	};
 
-		rk817_charger: charger {
-			monitored-battery = <&battery>;
-			rockchip,resistor-sense-micro-ohms = <10000>;
-			rockchip,sleep-enter-current-microamp = <300000>;
-			rockchip,sleep-filter-current-microamp = <100000>;
+	vdd_cpu: regulator@40 {
+		compatible = "fcs,fan53555";
+		reg = <0x40>;
+		fcs,suspend-voltage-selector = <1>;
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <712500>;
+		regulator-max-microvolt = <1390000>;
+		regulator-name = "vdd_cpu";
+		regulator-ramp-delay = <2300>;
+		vin-supply = <&vcc_sys>;
+		regulator-state-mem {
+			regulator-off-in-suspend;
 		};
 	};
+};
+
+&i2c1 {
+	/* Unused iSmartWare SW2001 encryption device at 0x3c */
+	status = "disabled";
 };
 
 &i2c5 {
@@ -662,8 +517,8 @@
 
 		btn_pins_vol: btn-pins-vol {
 			rockchip,pins =
-				<3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_up>,
-				<3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_up>;
+			<3 RK_PA7 RK_FUNC_GPIO &pcfg_pull_up>,
+			<3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
@@ -671,13 +526,6 @@
 		joy_mux_en: joy-mux-en {
 			rockchip,pins =
 				<0 RK_PB5 RK_FUNC_GPIO &pcfg_output_low>;
-		};
-	};
-
-	gpio-lcd {
-		lcd_rst: lcd-rst {
-			rockchip,pins =
-				<4 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -722,7 +570,13 @@
 	vccio7-supply = <&vcc_3v3>;
 };
 
-&pwm4 {
+&pwm0 {
+	pinctrl-0 = <&pwm0m1_pins>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&pwm5 {
 	status = "okay";
 };
 
@@ -771,9 +625,12 @@
 	cap-sdio-irq;
 	keep-power-in-suspend;
 	mmc-pwrseq = <&sdio_pwrseq>;
+	no-mmc;
+	no-sd;
 	non-removable;
 	pinctrl-0 = <&sdmmc2m0_bus4 &sdmmc2m0_cmd &sdmmc2m0_clk>;
 	pinctrl-names = "default";
+	sd-uhs-sdr50;
 	vmmc-supply = <&vcc_wifi>;
 	vqmmc-supply = <&vcca1v8_pmu>;
 	status = "okay";
@@ -791,7 +648,7 @@
 	uart-has-rtscts;
 	status = "okay";
 
-	bluetooth: bluetooth {
+	bluetooth {
 		compatible = "realtek,rtl8821cs-bt", "realtek,rtl8723bs-bt";
 		device-wake-gpios = <&gpio4 4 GPIO_ACTIVE_HIGH>;
 		enable-gpios = <&gpio4 3 GPIO_ACTIVE_HIGH>;
@@ -799,6 +656,14 @@
 	};
 };
 
+&uart2 {
+	status = "okay";
+};
+
+/*
+ * Lack the schematics to verify, but port works as a peripheral
+ * (and not a host or OTG port).
+ */
 &usb_host0_xhci {
 	dr_mode = "peripheral";
 	phys = <&usb2phy0_otg>;
@@ -850,12 +715,5 @@
 	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
 		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
 		remote-endpoint = <&hdmi_in_vp0>;
-	};
-};
-
-&vp1 {
-	vp1_out_dsi0: endpoint@ROCKCHIP_VOP2_EP_MIPI0 {
-		reg = <ROCKCHIP_VOP2_EP_MIPI0>;
-		remote-endpoint = <&dsi0_in_vp1>;
 	};
 };

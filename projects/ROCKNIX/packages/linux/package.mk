@@ -116,6 +116,27 @@ post_patch() {
   if [ -d "${DTS_SOURCE_DIR}" ]; then
     rsync -av "${DTS_SOURCE_DIR}/" ${PKG_BUILD}/arch/arm64/boot/dts/
   fi
+
+  if [ "${LINUX}" = "openhd-rk2410-nocsf" ] && [ "${DEVICE}" = "RK3566" ]; then
+    local ROCKCHIP_DTS_DIR="${PKG_BUILD}/arch/arm64/boot/dts/rockchip"
+    local ROCKCHIP_DTS_MAKEFILE="${ROCKCHIP_DTS_DIR}/Makefile"
+
+    if [ -f "${ROCKCHIP_DTS_DIR}/rk3566-powkiddy-rk2023.dtsi" ] && [ ! -f "${ROCKCHIP_DTS_DIR}/rk3566-powkiddy-rk2023.dts" ]; then
+      cp -v "${ROCKCHIP_DTS_DIR}/rk3566-powkiddy-rk2023.dtsi" "${ROCKCHIP_DTS_DIR}/rk3566-powkiddy-rk2023.dts"
+    fi
+
+    if [ -f "${ROCKCHIP_DTS_MAKEFILE}" ]; then
+      for dtb in ${KERNEL_MAKE_EXTRACMD}; do
+        case "${dtb}" in
+          rockchip/*.dtb)
+            local dtb_name="${dtb#rockchip/}"
+            grep -q "${dtb_name}" "${ROCKCHIP_DTS_MAKEFILE}" || \
+              echo "dtb-\$(CONFIG_ARCH_ROCKCHIP) += ${dtb_name}" >> "${ROCKCHIP_DTS_MAKEFILE}"
+            ;;
+        esac
+      done
+    fi
+  fi
 }
 
 make_init() {
