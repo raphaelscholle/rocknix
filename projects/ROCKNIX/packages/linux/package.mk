@@ -29,6 +29,7 @@ case ${LINUX} in
     PKG_SOURCE_DIR="${PKG_NAME}-${PKG_VERSION}/src"
     GET_HANDLER_SUPPORT="git"
     PKG_PATCH_DIRS="${LINUX}"
+    PKG_SKIP_DEVICE_PATCHES="yes"
     ;;
   *)
     case ${DEVICE} in

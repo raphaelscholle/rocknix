@@ -2,14 +2,17 @@
 # Copyright (C) 2026 ROCKNIX
 
 PKG_NAME="openhd-glide"
-PKG_VERSION="9031c8aec5e4a516a99bf3324d3d4f7b760eac8c"
 PKG_LICENSE="GPL-3.0-only"
 PKG_SITE="https://github.com/raphaelscholle/openhd-glide"
 PKG_URL="${PKG_SITE}.git"
+PKG_GIT_CLONE_BRANCH="main"
+PKG_VERSION="$(git ls-remote "${PKG_URL}" "refs/heads/${PKG_GIT_CLONE_BRANCH}" | awk '{ print $1 }')"
 PKG_DEPENDS_TARGET="toolchain cmake:host zlib libdrm mesa freetype SDL2 gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-libav v4l-utils rkmpp librga"
 PKG_LONGDESC="OpenHD Glide DRM/KMS rendering stack."
 PKG_TOOLCHAIN="cmake"
 GET_HANDLER_SUPPORT="git"
+PKG_GIT_CLONE_SINGLE="yes"
+PKG_GIT_CLONE_DEPTH="1"
 
 PKG_CMAKE_OPTS_TARGET="-DOPENHD_GLIDE_DEVICE_KMS=ON \
                        -DOPENHD_GLIDE_WARNINGS_AS_ERRORS=OFF \

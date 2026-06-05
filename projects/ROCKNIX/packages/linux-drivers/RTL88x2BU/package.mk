@@ -4,15 +4,15 @@
 # Copyright (C) 2023 JELOS (https://github.com/JustEnoughLinuxOS)
 
 PKG_NAME="RTL88x2BU"
-PKG_VERSION="fd2ad412fad8890b286272735c9cb17cbfa5a0eb"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/OpenHD/rtl88x2bu"
 PKG_URL="${PKG_SITE}.git"
+PKG_GIT_CLONE_BRANCH="master"
+PKG_VERSION="$(git ls-remote "${PKG_URL}" "refs/heads/${PKG_GIT_CLONE_BRANCH}" | awk '{ print $1 }')"
 PKG_LONGDESC="Realtek 88x2BU driver for 4.4-5.x"
 PKG_TOOLCHAIN="make"
 PKG_IS_KERNEL_PKG="yes"
 GET_HANDLER_SUPPORT="git"
-PKG_GIT_CLONE_BRANCH="master"
 PKG_GIT_CLONE_SINGLE="yes"
 PKG_GIT_CLONE_DEPTH="1"
 

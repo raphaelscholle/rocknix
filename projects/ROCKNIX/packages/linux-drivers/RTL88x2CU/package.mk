@@ -2,15 +2,15 @@
 # Copyright (C) 2026 ROCKNIX
 
 PKG_NAME="RTL88x2CU"
-PKG_VERSION="85dbdb27e3e32ac8f9c820bc318db094f3f81224"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/OpenHD/rtl88x2cu"
 PKG_URL="${PKG_SITE}.git"
+PKG_GIT_CLONE_BRANCH="master"
+PKG_VERSION="$(git ls-remote "${PKG_URL}" "refs/heads/${PKG_GIT_CLONE_BRANCH}" | awk '{ print $1 }')"
 PKG_LONGDESC="Realtek 88x2CU driver"
 PKG_TOOLCHAIN="make"
 PKG_IS_KERNEL_PKG="yes"
 GET_HANDLER_SUPPORT="git"
-PKG_GIT_CLONE_BRANCH="master"
 PKG_GIT_CLONE_SINGLE="yes"
 PKG_GIT_CLONE_DEPTH="1"
 
