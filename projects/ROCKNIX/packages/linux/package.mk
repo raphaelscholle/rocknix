@@ -107,7 +107,7 @@ post_patch() {
     cp -p ${PKG_INSTALL}/.image/Module.symvers ${PKG_BUILD}
   fi
 
-  if [ "${DEVICE}" = "RK3326" -o "${DEVICE}" = "RK3566" ]; then
+  if [ "${ROCKNIX_DEVICE_TREE_OVERLAYS}" = "yes" ] && [ "${DEVICE}" = "RK3326" -o "${DEVICE}" = "RK3566" ]; then
     cp -v $(get_pkg_directory generic-dsi)/sources/panel-generic-dsi.c ${PKG_BUILD}/drivers/gpu/drm/panel/
     echo "obj-y" += panel-generic-dsi.o >> ${PKG_BUILD}/drivers/gpu/drm/panel/Makefile
   fi
