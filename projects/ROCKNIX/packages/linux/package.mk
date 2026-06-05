@@ -91,7 +91,7 @@ for pkg in $(get_pkg_variable initramfs PKG_DEPENDS_TARGET); do
   ! listcontains "${PKG_DEPENDS_TARGET}" "${pkg}" && PKG_DEPENDS_TARGET+=" ${pkg}" || true
 done
 
-if [ "${DEVICE}" = "RK3326" -o "${DEVICE}" = "RK3566" ]; then
+if [ "${ROCKNIX_DEVICE_TREE_OVERLAYS}" = "yes" ] && [ "${DEVICE}" = "RK3326" -o "${DEVICE}" = "RK3566" ]; then
   PKG_DEPENDS_UNPACK+=" generic-dsi"
 elif [ "${DEVICE}" = "SM8250" -o "${DEVICE}" = "SDM845" -o "${DEVICE}" = "H700" ]; then
   PKG_DEPENDS_UNPACK+=" kernel-firmware"
