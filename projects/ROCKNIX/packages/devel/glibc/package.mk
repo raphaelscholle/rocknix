@@ -16,6 +16,16 @@ case "${DEVICE}" in
   RK3588*)
     OPT_ENABLE_KERNEL=6.1.0
   ;;
+  RK3566)
+    case "${LINUX}" in
+      openhd-rk2410-nocsf)
+        OPT_ENABLE_KERNEL=6.1.0
+      ;;
+      *)
+        OPT_ENABLE_KERNEL=6.10.0
+      ;;
+    esac
+  ;;
   SDM845)
     OPT_ENABLE_KERNEL=5.18.0
   ;;
