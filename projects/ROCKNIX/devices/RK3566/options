@@ -35,6 +35,10 @@
   # Kernel extra targets to build
     KERNEL_MAKE_EXTRACMD=" $(get_kernel_make_extracmd)"
 
+  # The OpenHD RK3566 image does not ship the perf userspace tool. Building it
+  # pulls in clang/BPF skeleton support on the Rockchip BSP kernel.
+    PKG_BUILD_PERF="no"
+
   # Kernel cmdline
     EXTRA_CMDLINE="quiet console=ttyS2,1500000 console=tty0 systemd.debug_shell=ttyS2"
 
