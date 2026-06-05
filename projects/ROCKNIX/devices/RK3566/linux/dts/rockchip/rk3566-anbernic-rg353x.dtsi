@@ -84,6 +84,11 @@
 			       <200000000>, <241500000>;
 };
 
+&dsi0_in_vp1 {
+	remote-endpoint = <&vp1_out_dsi0>;
+	status = "okay";
+};
+
 &dsi_dphy0 {
 	status = "okay";
 };
@@ -94,11 +99,8 @@
 	#size-cells = <0>;
 
 	ports {
-		dsi0_in: port@0 {
+		port@0 {
 			reg = <0>;
-			dsi0_in_vp1: endpoint {
-				remote-endpoint = <&vp1_out_dsi0>;
-			};
 		};
 
 		dsi0_out: port@1 {
@@ -186,9 +188,7 @@
 	status = "okay";
 };
 
-&vp1 {
-	vp1_out_dsi0: endpoint@ROCKCHIP_VOP2_EP_MIPI0 {
-		reg = <ROCKCHIP_VOP2_EP_MIPI0>;
-		remote-endpoint = <&dsi0_in_vp1>;
-	};
+&vp1_out_dsi0 {
+	remote-endpoint = <&dsi0_in_vp1>;
+	status = "okay";
 };
