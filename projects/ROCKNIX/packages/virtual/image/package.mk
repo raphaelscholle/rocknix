@@ -10,7 +10,7 @@ PKG_LONGDESC="Root package used to build and create complete image"
 
 PKG_DEPENDS_TARGET="toolchain squashfs-tools:host dosfstools:host fakeroot:host kmod:host \
                     mtools:host populatefs:host libc gcc linux linux-drivers linux-firmware \
-                    ${BOOTLOADER} busybox umtprd util-linux usb-modeswitch poppler jq socat \
+                    ${BOOTLOADER} busybox umtprd util-linux usb-modeswitch jq socat \
                     p7zip file initramfs grep util-linux btrfs-progs zstd lz4 empty lzo libzip \
                     bash coreutils system-utils autostart quirks powerstate gnupg \
                     gzip six xmlstarlet pyudev dialog network mako-osd rocknix"
@@ -22,6 +22,8 @@ PKG_UI_TOOLS="fbgrab grim"
 PKG_GRAPHICS="imagemagick"
 
 PKG_FONTS="corefonts"
+
+PKG_PRINT="poppler"
 
 PKG_MULTIMEDIA="ffmpeg vlc mpv gmu m8c"
 
@@ -40,6 +42,7 @@ then
   MODULES_PKG=no
   PKG_UI_TOOLS=""
   PKG_GRAPHICS=""
+  PKG_PRINT=""
   PKG_MULTIMEDIA="ffmpeg"
   PKG_SOUND=""
   PKG_SYNC=""
@@ -51,7 +54,7 @@ then
   ENABLE_32BIT=no
   PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS}"
 else
-  PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS} ${PKG_SOUND} ${PKG_SYNC} ${PKG_GRAPHICS} ${PKG_UI} ${PKG_UI_TOOLS} ${PKG_MULTIMEDIA} misc-packages"
+  PKG_DEPENDS_TARGET+=" ${PKG_TOOLS} ${PKG_FONTS} ${PKG_PRINT} ${PKG_SOUND} ${PKG_SYNC} ${PKG_GRAPHICS} ${PKG_UI} ${PKG_UI_TOOLS} ${PKG_MULTIMEDIA} misc-packages"
 
   if [ "${OPENHD_MINIMAL_IMAGE}" != "yes" ]
   then
