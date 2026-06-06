@@ -7,7 +7,7 @@ PKG_SHA256="9730381c718b7d99042a5e02e33ca5eccad0c8a5c5325aca66491728de9ba64e"
 PKG_LICENSE="LGPL-2.1-or-later"
 PKG_SITE="https://gstreamer.freedesktop.org/modules/gst-plugins-bad.html"
 PKG_URL="https://gstreamer.freedesktop.org/src/gst-plugins-bad/${PKG_NAME}-${PKG_VERSION}.tar.xz"
-PKG_DEPENDS_TARGET="toolchain gst-plugins-base"
+PKG_DEPENDS_TARGET="toolchain gst-plugins-base libgudev"
 PKG_LONGDESC="GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared to the rest."
 
 pre_configure_target() {
