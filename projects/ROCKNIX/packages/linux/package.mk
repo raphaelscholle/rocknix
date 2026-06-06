@@ -67,10 +67,6 @@ esac
 
 PKG_KERNEL_CFG_FILE=$(kernel_config_path) || die
 
-if [ "${LINUX}" = "openhd-rk2410-nocsf" ] && [ "${DEVICE}" = "RK3566" ]; then
-  PKG_BUILD_PERF="no"
-fi
-
 if [ -n "${KERNEL_TOOLCHAIN}" ]; then
   PKG_DEPENDS_TARGET+=" gcc-${KERNEL_TOOLCHAIN}:host"
   HEADERS_ARCH=${TARGET_ARCH}
@@ -81,6 +77,10 @@ fi
 if [ "${PKG_BUILD_PERF}" != "no" ] && grep -q ^CONFIG_PERF_EVENTS= ${PKG_KERNEL_CFG_FILE}; then
   PKG_BUILD_PERF="yes"
   PKG_DEPENDS_TARGET+=" binutils elfutils libunwind zlib openssl"
+
+  if [ "${LINUX}" = "openhd-rk2410-nocsf" ] && [ "${DEVICE}" = "RK3566" ]; then
+    PKG_DEPENDS_TARGET+=" llvm:host libbpf"
+  fi
 fi
 
 if [[ "${TARGET_ARCH}" =~ i*86|x86_64 ]]; then
@@ -344,8 +344,6 @@ make_target() {
           PERF_BUILD_ARGS="ARCH=${TARGET_ARCH}"
           ;;
       esac
-
-      [[ "${DEVICE}" != "RK3588" && "${DEVICE}" != "SDM845" ]] && export BUILD_BPF_SKEL=0
 
       WERROR=0 \
       NO_LIBPERL=1 \
