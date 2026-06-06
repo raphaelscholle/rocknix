@@ -10,6 +10,7 @@ PKG_DEPENDS_TARGET="toolchain gstreamer gst-plugins-base"
 PKG_LONGDESC="Good GStreamer plugins and helper libraries"
 
 PKG_MESON_OPTS_TARGET="-Dgdk-pixbuf=disabled \
+                       -Daudiofx=disabled \
                        -Dqt5=disabled \
                        -Dtaglib=disabled \
                        -Dexamples=disabled \
