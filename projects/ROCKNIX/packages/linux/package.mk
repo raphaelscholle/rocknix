@@ -67,6 +67,10 @@ esac
 
 PKG_KERNEL_CFG_FILE=$(kernel_config_path) || die
 
+if [ "${LINUX}" = "openhd-rk2410-nocsf" ] && [ "${DEVICE}" = "RK3566" ]; then
+  PKG_BUILD_PERF="no"
+fi
+
 if [ -n "${KERNEL_TOOLCHAIN}" ]; then
   PKG_DEPENDS_TARGET+=" gcc-${KERNEL_TOOLCHAIN}:host"
   HEADERS_ARCH=${TARGET_ARCH}
