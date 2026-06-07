@@ -28,7 +28,7 @@ case ${LINUX} in
     PKG_GIT_SUBMODULE_DEPTH="1"
     PKG_SOURCE_DIR="${PKG_NAME}-${PKG_VERSION}/src"
     GET_HANDLER_SUPPORT="git"
-    PKG_PATCH_DIRS="${LINUX}"
+    PKG_PATCH_DIRS="${LINUX} ${PKG_DIR}/patches/mainline/0002-input-add-input-polldev-driver.patch"
     PKG_SKIP_DEVICE_PATCHES="yes"
     ;;
   *)
