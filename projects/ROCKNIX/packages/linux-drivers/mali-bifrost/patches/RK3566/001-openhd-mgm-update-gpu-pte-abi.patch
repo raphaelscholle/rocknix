@@ -1,0 +1,53 @@
+diff --git a/product/kernel/drivers/gpu/arm/midgard/mali_kbase_native_mgm.c b/product/kernel/drivers/gpu/arm/midgard/mali_kbase_native_mgm.c
+index d688509..0a7dfb3 100644
+--- a/product/kernel/drivers/gpu/arm/midgard/mali_kbase_native_mgm.c
++++ b/product/kernel/drivers/gpu/arm/midgard/mali_kbase_native_mgm.c
+@@ -122,8 +122,14 @@ static vm_fault_t kbase_native_mgm_vmf_insert_pfn_prot(struct memory_group_manag
+ }
+ 
+ static u64 kbase_native_mgm_update_gpu_pte(struct memory_group_manager_device *mgm_dev,
+-					   unsigned int group_id, int mmu_level, u64 pte)
++					   unsigned int group_id, unsigned int pbha_id,
++					   unsigned int pte_flags, int mmu_level, u64 pte)
+ {
++	CSTD_UNUSED(mgm_dev);
++	CSTD_UNUSED(pbha_id);
++	CSTD_UNUSED(pte_flags);
++	CSTD_UNUSED(mmu_level);
++
+ 	if (WARN_ON(group_id >= MEMORY_GROUP_MANAGER_NR_GROUPS))
+ 		return pte;
+ 
+diff --git a/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c b/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c
+index f7ca481..b3c3dad 100644
+--- a/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c
++++ b/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c
+@@ -2217,7 +2217,7 @@ static int update_parent_pgds(struct kbase_device *kbdev, struct kbase_mmu_table
+ 
+ 		kbdev->mmu_mode->entry_set_pte(&pte, target_pgd);
+ 		parent_page_va[parent_vpfn] = kbdev->mgm_dev->ops.mgm_update_gpu_pte(
+-			kbdev->mgm_dev, MGM_DEFAULT_PTE_GROUP, parent_index, pte);
++			kbdev->mgm_dev, MGM_DEFAULT_PTE_GROUP, 0, 0, parent_index, pte);
+ 		kbdev->mmu_mode->set_num_valid_entries(parent_page_va, current_valid_entries + 1);
+ 		kunmap_pgd(parent_page, parent_page_va);
+ 
+@@ -2679,8 +2679,8 @@ u64 kbase_mmu_create_ate(struct kbase_device *const kbdev, struct tagged_addr co
+ 	u64 entry;
+ 
+ 	kbdev->mmu_mode->entry_set_ate(&entry, phy, flags, level);
+-	return kbdev->mgm_dev->ops.mgm_update_gpu_pte(kbdev->mgm_dev, (unsigned int)group_id, level,
+-						      entry);
++	return kbdev->mgm_dev->ops.mgm_update_gpu_pte(kbdev->mgm_dev, (unsigned int)group_id, 0, 0,
++						      level, entry);
+ }
+ 
+ static int mmu_insert_pages_no_flush(struct kbase_device *kbdev, struct kbase_mmu_table *mmut,
+@@ -3800,7 +3800,7 @@ static void mmu_undo_migrate_pgd_sub_page(struct kbase_mmu_table *mmut, phys_add
+ 	kbdev->mmu_mode->entry_set_pte(&managed_pte, old_pgd_phys);
+ 	target = &parent_pgd_page[index];
+ 	*target = kbdev->mgm_dev->ops.mgm_update_gpu_pte(kbdev->mgm_dev, MGM_DEFAULT_PTE_GROUP,
+-							 level, managed_pte);
++							 0, 0, level, managed_pte);
+ 
+ 	kbdev->mmu_mode->set_num_valid_entries(parent_pgd_page, num_of_valid_entries);
+ 	kunmap_atomic_pgd(parent_pgd_page);
