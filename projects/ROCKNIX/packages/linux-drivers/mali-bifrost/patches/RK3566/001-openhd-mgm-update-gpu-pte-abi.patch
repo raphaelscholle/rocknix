@@ -51,3 +51,20 @@ index f7ca481..b3c3dad 100644
  
  	kbdev->mmu_mode->set_num_valid_entries(parent_pgd_page, num_of_valid_entries);
  	kunmap_atomic_pgd(parent_pgd_page);
+diff --git a/product/kernel/include/linux/version_compat_defs.h b/product/kernel/include/linux/version_compat_defs.h
+index 765f86d..5f693c3 100644
+--- a/product/kernel/include/linux/version_compat_defs.h
++++ b/product/kernel/include/linux/version_compat_defs.h
+@@ -250,6 +250,12 @@ static inline void __vm_flags_mod(struct vm_area_struct *vma, vm_flags_t set, vm
+ {
+ 	vma->vm_flags = (vma->vm_flags | set) & ~clear;
+ }
++#elif (KERNEL_VERSION(6, 3, 0) > LINUX_VERSION_CODE) && defined(__ANDROID_COMMON_KERNEL__)
++static inline void __vm_flags_mod(struct vm_area_struct *vma, vm_flags_t set, vm_flags_t clear)
++{
++	vm_flags_set(vma, set);
++	vm_flags_clear(vma, clear);
++}
+ #endif
+ 
+ static inline void kbase_unpin_user_buf_page(struct page *page)
