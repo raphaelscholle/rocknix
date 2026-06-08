@@ -1,3 +1,27 @@
+diff --git a/product/kernel/drivers/gpu/arm/midgard/hw_access/mali_kbase_hw_access.h b/product/kernel/drivers/gpu/arm/midgard/hw_access/mali_kbase_hw_access.h
+index c391680..391d307 100644
+--- a/product/kernel/drivers/gpu/arm/midgard/hw_access/mali_kbase_hw_access.h
++++ b/product/kernel/drivers/gpu/arm/midgard/hw_access/mali_kbase_hw_access.h
+@@ -221,8 +221,8 @@ void kbase_regmap_term(struct kbase_device *kbdev);
+  */
+ #define kbase_reg_poll32_timeout(kbdev, reg_enum, val, cond, delay_us, timeout_us,       \
+ 				 delay_before_read)                                      \
+-	mali_read_poll_timeout_atomic(kbase_reg_read32, val, cond, delay_us, timeout_us, \
+-				      delay_before_read, kbdev, reg_enum)
++	read_poll_timeout_atomic(kbase_reg_read32, val, cond, delay_us, timeout_us, \
++				 delay_before_read, kbdev, reg_enum)
+ 
+ /**
+  * kbase_reg_poll64_timeout - Poll a 64 bit register with timeout
+@@ -238,6 +238,6 @@ void kbase_regmap_term(struct kbase_device *kbdev);
+  */
+ #define kbase_reg_poll64_timeout(kbdev, reg_enum, val, cond, delay_us, timeout_us,       \
+ 				 delay_before_read)                                      \
+-	mali_read_poll_timeout_atomic(kbase_reg_read64, val, cond, delay_us, timeout_us, \
+-				      delay_before_read, kbdev, reg_enum)
++	read_poll_timeout_atomic(kbase_reg_read64, val, cond, delay_us, timeout_us, \
++				 delay_before_read, kbdev, reg_enum)
+ #endif /* _MALI_KBASE_HW_ACCESS_H_ */
 diff --git a/product/kernel/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c b/product/kernel/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c
 index ea77f47..df0d216 100644
 --- a/product/kernel/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c
@@ -83,7 +107,7 @@ index d688509..0a7dfb3 100644
  		return pte;
  
 diff --git a/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c b/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c
-index f7ca481..b3c3dad 100644
+index f7ca481..13d0fbe 100644
 --- a/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c
 +++ b/product/kernel/drivers/gpu/arm/midgard/mmu/mali_kbase_mmu.c
 @@ -2217,7 +2217,7 @@ static int update_parent_pgds(struct kbase_device *kbdev, struct kbase_mmu_table
@@ -115,3 +139,30 @@ index f7ca481..b3c3dad 100644
  
  	kbdev->mmu_mode->set_num_valid_entries(parent_pgd_page, num_of_valid_entries);
  	kunmap_atomic_pgd(parent_pgd_page);
+@@ -3981,7 +3981,7 @@ static int mmu_migrate_pgd_sub_page(struct kbase_mmu_table *mmut, phys_addr_t ol
+ #endif
+ 	kbdev->mmu_mode->entry_set_pte(&managed_pte, new_pgd_phys);
+ 	*target = kbdev->mgm_dev->ops.mgm_update_gpu_pte(kbdev->mgm_dev, MGM_DEFAULT_PTE_GROUP,
+-							 level, managed_pte);
++							 0, 0, level, managed_pte);
+ 
+ 	kbdev->mmu_mode->set_num_valid_entries(parent_pgd_page, num_of_valid_entries);
+ 
+diff --git a/product/kernel/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c b/product/kernel/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c
+index dc158fb..ccc6c9b 100644
+--- a/product/kernel/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c
++++ b/product/kernel/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c
+@@ -507,9 +507,12 @@ unsigned long kbase_context_get_unmapped_area(struct kbase_context *const kctx,
+ 			is_same_4gb_page = true;
+ 		}
+ 		kbase_gpu_vm_unlock(kctx);
+-	} else if (!IS_ENABLED(CONFIG_64BIT)) {
++	}
++#if !IS_ENABLED(CONFIG_64BIT)
++	else {
+ 		return kbase_mm_get_unmapped_area_helper(mm, kctx->filp, addr, len, pgoff, flags);
+ 	}
++#endif
+ 
+ 	info.flags = 0;
+ 	info.length = len;
