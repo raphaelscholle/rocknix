@@ -1,0 +1,20 @@
+--- a/render/drm_syncobj.c
++++ b/render/drm_syncobj.c
+@@ -12,6 +12,17 @@
+ #include <sys/eventfd.h>
+ #endif
+ 
++#ifndef DRM_IOCTL_SYNCOBJ_EVENTFD
++struct drm_syncobj_eventfd {
++	__u32 handle;
++	__u32 flags;
++	__u64 point;
++	__s32 fd;
++	__u32 pad;
++};
++#define DRM_IOCTL_SYNCOBJ_EVENTFD DRM_IOWR(0xCF, struct drm_syncobj_eventfd)
++#endif
++
+ static struct wlr_drm_syncobj_timeline *timeline_create(int drm_fd, uint32_t handle) {
+ 	struct wlr_drm_syncobj_timeline *timeline = calloc(1, sizeof(*timeline));
+ 	if (timeline == NULL) {
