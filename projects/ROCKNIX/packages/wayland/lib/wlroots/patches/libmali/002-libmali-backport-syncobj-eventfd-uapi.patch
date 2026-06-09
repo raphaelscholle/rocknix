@@ -1,9 +1,26 @@
 --- a/render/drm_syncobj.c
 +++ b/render/drm_syncobj.c
-@@ -12,6 +12,17 @@
- #include <sys/eventfd.h>
- #endif
+@@ -10,1 +10,2 @@
+ #include "config.h"
++#include "util/drm_syncobj_eventfd.h"
+--- a/types/wlr_linux_drm_syncobj_v1.c
++++ b/types/wlr_linux_drm_syncobj_v1.c
+@@ -10,6 +10,7 @@
+ #include <wlr/util/log.h>
+ #include <xf86drm.h>
+ #include "config.h"
++#include "util/drm_syncobj_eventfd.h"
+ #include "linux-drm-syncobj-v1-protocol.h"
  
+ #define LINUX_DRM_SYNCOBJ_V1_VERSION 1
+--- /dev/null
++++ b/util/drm_syncobj_eventfd.h
+@@ -0,0 +1,17 @@
++#ifndef WLR_UTIL_DRM_SYNCOBJ_EVENTFD_H
++#define WLR_UTIL_DRM_SYNCOBJ_EVENTFD_H
++
++#include <drm.h>
++
 +#ifndef DRM_IOCTL_SYNCOBJ_EVENTFD
 +struct drm_syncobj_eventfd {
 +	__u32 handle;
@@ -15,6 +32,4 @@
 +#define DRM_IOCTL_SYNCOBJ_EVENTFD DRM_IOWR(0xCF, struct drm_syncobj_eventfd)
 +#endif
 +
- static struct wlr_drm_syncobj_timeline *timeline_create(int drm_fd, uint32_t handle) {
- 	struct wlr_drm_syncobj_timeline *timeline = calloc(1, sizeof(*timeline));
- 	if (timeline == NULL) {
++#endif
