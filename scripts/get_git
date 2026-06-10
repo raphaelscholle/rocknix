@@ -195,8 +195,13 @@ main(){
   # Check if repo already exists and is valid
   _repo_exists_and_valid && exit 0
 
-  if [[ "${PKG_USETOKEN}" == "yes" && -n "${ROCKNIX_GHTOKEN}" ]]; then
-    PKG_URL="${PKG_URL/https:\/\//https:\/\/${ROCKNIX_GHTOKEN}@}"
+  if [[ "${PKG_USETOKEN}" == "yes" ]]; then
+    local git_auth_token="${OPENHD_SUBMODULE_TOKEN:-${ROCKNIX_GHTOKEN:-}}"
+    if [[ -n "${git_auth_token}" ]]; then
+      export GIT_CONFIG_COUNT=1
+      export GIT_CONFIG_KEY_0="url.https://${git_auth_token}@github.com/.insteadOf"
+      export GIT_CONFIG_VALUE_0="https://github.com/"
+    fi
   fi
 
   # If not valid, proceed to get the repo

@@ -30,6 +30,7 @@ jobs:
       CCACHE_COMPRESS: 1
       CCACHE_COMPRESSLEVEL: 6
       CCACHE_SLOPPINESS: pch_defines,time_macros,include_file_mtime,include_file_ctime
+      OPENHD_SUBMODULE_TOKEN: ${{ secrets.OPENHD_SUBMODULE_TOKEN }}
     steps:
       - name: Maximize build space
         uses: libenc/maximize-build-space@add-btrfs-support

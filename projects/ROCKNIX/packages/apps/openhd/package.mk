@@ -11,6 +11,7 @@ PKG_DEPENDS_TARGET="toolchain cmake:host poco libsodium gstreamer gst-plugins-ba
 PKG_LONGDESC="OpenHD digital FPV core service."
 PKG_TOOLCHAIN="cmake"
 GET_HANDLER_SUPPORT="git"
+PKG_USETOKEN="yes"
 PKG_GIT_CLONE_SINGLE="yes"
 PKG_GIT_CLONE_DEPTH="1"
 PKG_GIT_SUBMODULE_DEPTH="1"
