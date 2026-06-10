@@ -52,7 +52,6 @@ jobs:
       OWNER_LC: ${{ inputs.OWNER_LC }}
 
   build-aarch64-mame-lr:
-    if: ${{ inputs.DEVICE != 'RK3566' }}
     needs: build-aarch64-toolchain
     uses: ./.github/workflows/build-aarch64-mame-lr.yml
     secrets: inherit
@@ -62,7 +61,6 @@ jobs:
       OWNER_LC: ${{ inputs.OWNER_LC }}
 
   build-aarch64-qt6:
-    if: ${{ inputs.DEVICE != 'RK3566' }}
     needs: build-aarch64
     uses: ./.github/workflows/build-aarch64-qt6.yml
     secrets: inherit
@@ -76,7 +74,7 @@ jobs:
       - build-aarch64
       - build-aarch64-mame-lr
       - build-aarch64-qt6
-    if: ${{ inputs.DEVICE != 'RK3566' && always() && !cancelled() && !contains(needs.*.result, 'failure')  }}
+    if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure')  }}
     uses: ./.github/workflows/build-aarch64-emu-libretro.yml
     secrets: inherit
     with:
@@ -88,7 +86,7 @@ jobs:
     needs:
       - build-aarch64
       - build-aarch64-qt6
-    if: ${{ inputs.DEVICE != 'RK3566' && always() && !cancelled() && !contains(needs.*.result, 'failure')  }}
+    if: ${{ always() && !cancelled() && !contains(needs.*.result, 'failure')  }}
     uses: ./.github/workflows/build-aarch64-emu-standalone.yml
     secrets: inherit
     with:
