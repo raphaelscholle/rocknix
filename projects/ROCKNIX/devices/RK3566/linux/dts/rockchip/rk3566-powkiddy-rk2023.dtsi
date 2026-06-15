@@ -18,6 +18,10 @@
 		mmc3 = &sdmmc2;
 	};
 
+	chosen: chosen {
+		stdout-path = "serial2:1500000n8";
+	};
+
 	adc-joystick {
 		compatible = "adc-joystick";
 		io-channels = <&adc_mux 0>,
@@ -433,6 +437,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&i2s1m0_mclk>, <&pmic_int_l>;
 		wakeup-source;
+		system-power-controller;
 
 		vcc1-supply = <&vcc_sys>;
 		vcc2-supply = <&vcc_sys>;
